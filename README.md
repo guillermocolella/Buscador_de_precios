@@ -8,8 +8,6 @@ Está diseñado con Python y sus librerías Selenium, Beautifulsoup y Pandas. Si
 
 *  [LinkedIn]   (https://www.linkedin.com/in/guillermocolella/)	
 
-##  Instalación
-Descomprimir el archivo ws.rar y ejecutar ws.exe
 ##  Contratación
 Si queres contratarme podes escribrirme a van.smeiter95@gmail.com para consultas.
 
