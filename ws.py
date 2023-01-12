@@ -30,9 +30,9 @@ cwd = os.path.expanduser('~\Desktop\Precios.xlsx')
 #--| Funcion que hace scraping en la pagina de Jumbo
 def scrap_products_jumbo(opcion=""):   
     productos = []
-    browser.get('https://www.jumbo.com.ar/')
+    browser.get('https://www.jumbo.com.ar/') 
     time.sleep(5)
-    buscador = browser.find_element(By.XPATH,'/html/body/header/div[1]/div[3]/div[4]/nav/div[1]/div[1]/div[1]/input')
+    buscador = browser.find_element(By.XPATH,'/html/body/header/div[1]/div[2]/div[4]/nav/div[1]/div[1]/div[1]/input')
     buscador.send_keys(opcion)
     time.sleep(1)
     buscador.send_keys(Keys.ENTER)
@@ -49,7 +49,7 @@ def scrap_products_jumbo(opcion=""):
         df = pd.DataFrame.from_dict(productos) 
         with open(os.path.join(os.path.expanduser('~'), 'Desktop', 'Precios.xlsx'), 'wb') as fh:
             df.to_excel (fh, sheet_name = 'Comparacion', index = False)                 
-    return productos    
+    return productos  
 
 #--| Funcion que hace scraping de la pagina de Changomas
 def scrap_products_chango(opcion=""): 
