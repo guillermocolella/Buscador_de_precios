@@ -6,8 +6,9 @@ Está diseñado con Python y sus librerías Selenium, Beautifulsoup y Pandas. Si
 ##  Autor
 **Guillermo Colella**
 
-*  [LinkedIn]   (https://www.linkedin.com/in/guillermocolella/)	
+*[Portfolio]   (https://www.guillermocolella.com/)	  
+*[LinkedIn]   (https://www.linkedin.com/in/guillermocolella/)	
 
 ##  Contratación
-Si queres contratarme podes escribrirme a van.smeiter95@gmail.com para consultas.
+Si queres contratarme podes escribrirme a info@guillermocolella.com para consultas.
 
