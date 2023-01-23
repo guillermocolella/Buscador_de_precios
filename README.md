@@ -1,7 +1,7 @@
 # Buscador de precios
 Programa que compara precios entre diferentes páginas
 ##  Descripcion	
-Está diseñado con Python y sus librerías Selenium, Beautifulsoup y Pandas. Sirve para comparar precios de alimentos en 3 páginas distintas.
+Está diseñado con Python y sus librerías Selenium, Beautifulsoup y Pandas. Sirve para comparar precios de alimentos en 4 páginas distintas.
 
 ##  Autor
 **Guillermo Colella**
