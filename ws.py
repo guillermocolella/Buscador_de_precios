@@ -30,25 +30,52 @@ cwd = os.path.expanduser('~\Desktop\Precios.xlsx')
 #--| Funcion que hace scraping en la pagina de Jumbo
 def scrap_products_jumbo(opcion=""):   
     productos = []
+    browser.delete_all_cookies()
     browser.get('https://www.jumbo.com.ar/') 
     time.sleep(5)
-    buscador = browser.find_element(By.XPATH,'/html/body/header/div[1]/div[2]/div[4]/nav/div[1]/div[1]/div[1]/input')
+    buscador = browser.find_element(By.XPATH,'/html/body/div[2]/div/div[1]/div/div[4]/div[1]/div/div/div[2]/section/div/div[2]/div/div/div[1]/div/label/div/input')
     buscador.send_keys(opcion)
     time.sleep(1)
     buscador.send_keys(Keys.ENTER)
     time.sleep(5)
-    soup = BeautifulSoup(browser.page_source, 'lxml')
-    items = soup.find_all('div', class_= 'product-item')      
+    soup = BeautifulSoup(browser.page_source, 'lxml') 
+       
+    items = soup.find_all('article', class_= 'vtex-product-summary-2-x-element pointer pt3 pb4 flex flex-column h-100')      
     for item in items:
-        producto = {}
-        producto['Productos de Jumbo'] = item.find('a' , class_='product-item__name').text
-        producto['Precio'] = item.find('span', class_= 'product-prices__value product-prices__value--best-price').text        
+        producto = {} 
+        producto['Productos de Jumbo'] = item.find('span' , class_='vtex-product-summary-2-x-productBrand vtex-product-summary-2-x-brandName t-body').text
+        producto['Precio'] = item.find('div', class_='vtex-flex-layout-0-x-flexColChild vtex-flex-layout-0-x-flexColChild--shelf-main-price-box pb0').text 
         productos.append(producto)
 
         # Se crea el Dataframe y se guarda en un archivo excel
         df = pd.DataFrame.from_dict(productos) 
         with open(os.path.join(os.path.expanduser('~'), 'Desktop', 'Precios.xlsx'), 'wb') as fh:
             df.to_excel (fh, sheet_name = 'Comparacion', index = False)                 
+    return productos  
+
+def scrap_products_dia(opcion=""):   
+    productos = []
+    browser.delete_all_cookies()
+    browser.get('https://diaonline.supermercadosdia.com.ar/') 
+    time.sleep(5)
+    buscador = browser.find_element(By.XPATH,'/html/body/div[2]/div/div[1]/div/div[1]/div/div[3]/div/div[4]/div/div/div/div/div[1]/div/label/div/input')
+    buscador.send_keys(opcion)
+    time.sleep(1)
+    buscador.send_keys(Keys.ENTER)
+    time.sleep(5)
+    soup = BeautifulSoup(browser.page_source, 'lxml') 
+       
+    items = soup.find_all('div', class_= 'vtex-search-result-3-x-galleryItem vtex-search-result-3-x-galleryItem--normal vtex-search-result-3-x-galleryItem--default pa4')      
+    for item in items:
+        producto = {} 
+        producto['Productos de Dia'] = item.find('span' , class_='vtex-product-summary-2-x-productBrand vtex-product-summary-2-x-brandName t-body').text
+        producto['Precio'] = item.find('span', class_='vtex-product-price-1-x-currencyContainer').text  
+        productos.append(producto)
+
+        # Se crea el Dataframe y se añade al archivo excel previamente creado
+        df = pd.DataFrame.from_dict(productos) 
+        with pd.ExcelWriter(cwd, engine="openpyxl",if_sheet_exists='overlay', mode='a') as writer:  
+                df.to_excel(writer, sheet_name='Comparacion', startcol = 6,  index = False)                  
     return productos  
 
 #--| Funcion que hace scraping de la pagina de Changomas
@@ -136,7 +163,19 @@ def main():
     print("--------------------------------------------------------------\n")
     for producto in productos_coto:
         print(f'{producto["Productos de Coto"]} = {producto["Precio"]}')
-        print("\n")     
+        print("\n") 
+
+    print("************************************************************")    
+    print(f"      >>>>>>  Buscando {opcion.upper()} en DIA  <<<<<<<<<")
+    print("************************************************************\n")      
+    productos_dia = scrap_products_dia(opcion) 
+    print("------------------------------------------------------------------")
+    print(f" >>>>>>  Mostrando precios de {opcion.upper()} en DIA  <<<<<<<<<")
+    print("------------------------------------------------------------------\n")
+    for producto in productos_dia:
+        print(f'{producto["Productos de Dia"]} = {producto["Precio"]}')
+        print("\n")
+        
 
     print(" ---------------------------------------------------------")
     print("| - SE GUARDO LA INFORMACION EN EL ARCHIVO Precios.xlsx - |")
