@@ -66,7 +66,7 @@ def scrap_products_dia(opcion=""):
     browser.get('https://diaonline.supermercadosdia.com.ar/')
     time.sleep(5)
     buscador = browser.find_element(
-        By.XPATH, '/html/body/div[2]/div/div[1]/div/div[1]/div/div[3]/div/div[4]/div/div/div/div/div[1]/div/label/div/input')
+        By.XPATH, '/html/body/div[2]/div/div[1]/div/div[1]/div/div[4]/div/div[4]/div/div/div/div/div[1]/div/label/div/input')
     buscador.send_keys(opcion)
     time.sleep(1)
     buscador.send_keys(Keys.ENTER)
