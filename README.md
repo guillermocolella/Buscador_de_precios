@@ -4,6 +4,9 @@ Programa que compara precios entre diferentes páginas de supermercados.
 Está diseñado con Python y sus librerías Selenium, Beautifulsoup y Pandas. Sirve para comparar precios de productos en 4 páginas de supermercados argentinos.
 Una vez terminado el scrapping, el programa da la opcion de abrir los resultados en una hoja de Excel
 
+##  Instrucciones
+Descargar los archivos en una carpeta y ejecutar el archivo main.py
+
 ##  Autor
 **Guillermo Colella**
 
