@@ -8,10 +8,6 @@ from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 import os
 
-print("  ========================================")
-print(" | - BIENVENIDOS AL BUSCADOR DE PRECIOS - |")
-print("  ========================================\n")
-
 # --| Setup
 options = Options()
 options.add_argument("--headless")
@@ -52,7 +48,6 @@ def scrap_products_jumbo(opcion=""):
         producto['Precio'] = item.find(
             'div', class_='vtex-flex-layout-0-x-flexColChild vtex-flex-layout-0-x-flexColChild--shelf-main-price-box pb0').text
         productos.append(producto)
-
         # Se crea el Dataframe y se guarda en un archivo excel
         df = pd.DataFrame.from_dict(productos)
         with open(os.path.join(os.path.expanduser('~'), 'Desktop', 'Precios.xlsx'), 'wb') as fh:
@@ -66,13 +61,12 @@ def scrap_products_dia(opcion=""):
     browser.get('https://diaonline.supermercadosdia.com.ar/')
     time.sleep(5)
     buscador = browser.find_element(
-        By.XPATH, '/html/body/div[2]/div/div[1]/div/div[1]/div/div[4]/div/div[4]/div/div/div/div/div[1]/div/label/div/input')
+        By.XPATH, '/html/body/div[2]/div/div[1]/div/div[1]/div/div[3]/div/div[4]/div/div/div/div/div[1]/div/label/div/input')
     buscador.send_keys(opcion)
     time.sleep(1)
     buscador.send_keys(Keys.ENTER)
     time.sleep(5)
     soup = BeautifulSoup(browser.page_source, 'lxml')
-
     items = soup.find_all(
         'div', class_='vtex-search-result-3-x-galleryItem vtex-search-result-3-x-galleryItem--normal vtex-search-result-3-x-galleryItem--default pa4')
     for item in items:
@@ -89,10 +83,7 @@ def scrap_products_dia(opcion=""):
                 df.to_excel(writer, sheet_name='Comparacion',
                             startcol=6,  index=False)
     return productos
-
 # --| Funcion que hace scraping de la pagina de Changomas
-
-
 def scrap_products_chango(opcion=""):
     productos = []
     browser.get('https://www.masonline.com.ar/')
@@ -122,8 +113,6 @@ def scrap_products_chango(opcion=""):
     return productos
 
 # --| Funcion que hace scraping de la pagina de Coto
-
-
 def scrap_products_coto(opcion=""):
     productos = []
     browser.get('https://www.cotodigital3.com.ar/sitios/cdigi/')
@@ -151,82 +140,4 @@ def scrap_products_coto(opcion=""):
                             startcol=4,  index=False)
     return productos
 
-
-# --| Funcion principal que ejecuta el programa
-def main():
-    opcion = input("Introduce el producto que quieres buscar >> ")
-    print("")
-
-    print("************************************************************")
-    print(f"      >>>>>>  Buscando {opcion.upper()} en Jumbo  <<<<<<<<<")
-    print("************************************************************\n")
-    productos_jumbo = scrap_products_jumbo(opcion)
-    print("------------------------------------------------------------")
-    print(
-        f" >>>>>>  Mostrando precios de {opcion.upper()} en Jumbo  <<<<<<<<<")
-    print("------------------------------------------------------------\n")
-    for producto in productos_jumbo:
-        print(f'{producto["Productos de Jumbo"]} = {producto["Precio"]}')
-        print("\n")
-
-    print("************************************************************")
-    print(f"      >>>>>>  Buscando {opcion.upper()} en ChangoMas  <<<<<<<<<")
-    print("************************************************************\n")
-    productos_chango = scrap_products_chango(opcion)
-    print("------------------------------------------------------------------")
-    print(
-        f" >>>>>>  Mostrando precios de {opcion.upper()} en ChangoMas  <<<<<<<<<")
-    print("------------------------------------------------------------------\n")
-    for producto in productos_chango:
-        print(f'{producto["Productos de Changomas"]} = {producto["Precio"]}')
-        print("\n")
-
-    print("************************************************************")
-    print(f"    >>>>>>  Buscando {opcion.upper()} en Coto  <<<<<<<<<")
-    print("************************************************************\n")
-    productos_coto = scrap_products_coto(opcion)
-    print("--------------------------------------------------------------")
-    print(f" >>>>>>  Mostrando precios de {opcion.upper()} en Coto  <<<<<<<<<")
-    print("--------------------------------------------------------------\n")
-    for producto in productos_coto:
-        print(f'{producto["Productos de Coto"]} = {producto["Precio"]}')
-        print("\n")
-
-    print("************************************************************")
-    print(f"      >>>>>>  Buscando {opcion.upper()} en DIA  <<<<<<<<<")
-    print("************************************************************\n")
-    productos_dia = scrap_products_dia(opcion)
-    print("------------------------------------------------------------------")
-    print(f" >>>>>>  Mostrando precios de {opcion.upper()} en DIA  <<<<<<<<<")
-    print("------------------------------------------------------------------\n")
-    for producto in productos_dia:
-        print(f'{producto["Productos de Dia"]} = {producto["Precio"]}')
-        print("\n")
-
-    print(" ---------------------------------------------------------")
-    print("| - SE GUARDO LA INFORMACION EN EL ARCHIVO Precios.xlsx - |")
-    print(" ---------------------------------------------------------\n")
-
-    # Se pregunta al usuario si quiere visualizar el archivo generado
-    respuesta = input("¿Queres abrir el archivo Excel? (S/N) : ").upper()
-    print("")
-    if respuesta == "S":
-        os.startfile(cwd)
-    else:
-        print("El archivo se guardo en el Escritorio\n")
-
-
-main()
-
-# --| Bucle para seguir buscando productos
-while True:
-    nuevo = input("¿Buscar otro Producto? (S/N) : ").upper()
-    print("")
-    if nuevo == "S":
-        main()
-
-    else:   
-         print("Cerrando el programa...")
-         browser.quit()
-         break
 
