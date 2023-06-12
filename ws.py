@@ -32,7 +32,7 @@ def scrap_products_jumbo(opcion=""):
     browser.get('https://www.jumbo.com.ar/')
     time.sleep(5)
     buscador = browser.find_element(
-        By.XPATH, '/html/body/div[2]/div/div[1]/div/div[4]/div[1]/div/div/div[2]/section/div/div[2]/div/div/div[1]/div/label/div/input')
+        By.XPATH, '/html/body/div[2]/div/div[1]/div/div[5]/div[1]/div/div/div[2]/section/div/div[2]/div/div/div[1]/div/label/div/input')
     buscador.send_keys(opcion)
     time.sleep(1)
     buscador.send_keys(Keys.ENTER)
