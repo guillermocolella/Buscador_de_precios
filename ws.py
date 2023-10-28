@@ -17,8 +17,9 @@ options.add_argument("--window-size=1920,1080")
 options.add_argument("--allow-insecure-localhost")
 options.add_argument("--disable-gpu")
 options.add_argument("--no-sandbox")
-s = Service('chromedriver\chromedriver.exe')
-browser = webdriver.Chrome(service=s, options=options)
+
+browser = webdriver.Chrome(options=options)
+browser.get("https://www.google.com/")
 
 # --| Ruta donde se guarda el archivo Excel que genera el programa
 cwd = os.path.expanduser('~\Desktop\Precios.xlsx')
@@ -61,7 +62,7 @@ def scrap_products_dia(opcion=""):
     browser.get('https://diaonline.supermercadosdia.com.ar/')
     time.sleep(5)
     buscador = browser.find_element(
-        By.XPATH, '/html/body/div[2]/div/div[1]/div/div[1]/div/div[3]/div/div[4]/div/div/div/div/div[1]/div/label/div/input')
+        By.XPATH, '/html/body/div[2]/div/div[1]/div/div[1]/div/div[3]/div/div[3]/div/div/div/div/div[1]/div/label/div/input')
     buscador.send_keys(opcion)
     time.sleep(1)
     buscador.send_keys(Keys.ENTER)
@@ -102,7 +103,7 @@ def scrap_products_chango(opcion=""):
         producto['Productos de Changomas'] = item.find(
             'span', class_='vtex-product-summary-2-x-productBrand').getText()
         producto['Precio'] = item.find(
-            'div', class_='lyracons-dynamic-product-0-x-dynamicProductPrice').getText()
+            'div', class_='valtech-gdn-dynamic-product-0-x-dynamicProductPrice mb4').getText()
         productos.append(producto)
 
         # Se crea el Dataframe y se añade al archivo excel previamente creado
@@ -139,5 +140,3 @@ def scrap_products_coto(opcion=""):
                 df.to_excel(writer, sheet_name='Comparacion',
                             startcol=4,  index=False)
     return productos
-
-
